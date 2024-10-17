@@ -6,31 +6,45 @@ ENTITY testbench IS
 END ENTITY testbench;
 
 ARCHITECTURE arch OF testbench IS
-    SIGNAL x_s: std_logic_vector(3 DOWNTO 0);
-    SIGNAL y_s: std_logic_vector(3 DOWNTO 0);
+    SIGNAL cmd_s: std_logic_vector(2 DOWNTO 0);
+    SIGNAL a_s: std_logic_vector(3 DOWNTO 0);
+    SIGNAL b_s: std_logic_vector(3 DOWNTO 0);
+    SIGNAL a_cond_s: std_logic_vector(3 DOWNTO 0);
+    SIGNAL b_cond_s: std_logic_vector(3 DOWNTO 0);
+    SIGNAL c_in_cond_s: std_logic;
 
-    COMPONENT negator IS
+    COMPONENT conditioner IS
         GENERIC (
             N: integer
         );
         PORT (
-            x: IN std_logic_vector(N-1 DOWNTO 0);
-            y: OUT std_logic_vector(N-1 DOWNTO 0)
+            cmd: IN std_logic_vector(2 DOWNTO 0);
+            a: IN std_logic_vector(N-1 DOWNTO 0);
+            b: IN std_logic_vector(N-1 DOWNTO 0);
+            a_cond: OUT std_logic_vector(N-1 DOWNTO 0);
+            b_cond: OUT std_logic_vector(N-1 DOWNTO 0);
+            c_in_cond: OUT std_logic
         );
-    END COMPONENT negator;
+    END COMPONENT conditioner;
 BEGIN
 
-    uut: negator GENERIC MAP (
+    uut: conditioner GENERIC MAP (
         N => 4
     ) PORT MAP (
-        x => x_s,
-        y => y_s
+        cmd => cmd_s,
+        a => a_s,
+        b => b_s,
+        a_cond => a_cond_s,
+        b_cond => b_cond_s,
+        c_in_cond => c_in_cond_s
     );
 
     stimulus: PROCESS
     BEGIN
 
-        x_s <= "0101";
+        cmd_s <= "000";
+        a_s <= "0101";
+        b_s <= "0000";
         WAIT FOR 10 NS;
 
         WAIT;

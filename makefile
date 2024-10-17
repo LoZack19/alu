@@ -4,7 +4,7 @@
 GHDL = ghdl
 
 # VHDL source files
-SRCS = src/full_adder.vhd src/negator.vhd src/testbench.vhd
+SRCS = src/full_adder.vhd src/negator.vhd src/conditioner.vhd src/testbench.vhd
 
 # Default target
 all: run
