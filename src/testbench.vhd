@@ -9,11 +9,9 @@ ARCHITECTURE arch OF testbench IS
     SIGNAL cmd_s: std_logic_vector(2 DOWNTO 0);
     SIGNAL a_s: std_logic_vector(3 DOWNTO 0);
     SIGNAL b_s: std_logic_vector(3 DOWNTO 0);
-    SIGNAL a_cond_s: std_logic_vector(3 DOWNTO 0);
-    SIGNAL b_cond_s: std_logic_vector(3 DOWNTO 0);
-    SIGNAL c_in_cond_s: std_logic;
+    SIGNAL y_s: std_logic_vector(3 DOWNTO 0);
 
-    COMPONENT conditioner IS
+    COMPONENT alu IS
         GENERIC (
             N: integer
         );
@@ -21,30 +19,46 @@ ARCHITECTURE arch OF testbench IS
             cmd: IN std_logic_vector(2 DOWNTO 0);
             a: IN std_logic_vector(N-1 DOWNTO 0);
             b: IN std_logic_vector(N-1 DOWNTO 0);
-            a_cond: OUT std_logic_vector(N-1 DOWNTO 0);
-            b_cond: OUT std_logic_vector(N-1 DOWNTO 0);
-            c_in_cond: OUT std_logic
+            y: OUT std_logic_vector(N-1 DOWNTO 0)
         );
-    END COMPONENT conditioner;
+    END COMPONENT alu;
 BEGIN
 
-    uut: conditioner GENERIC MAP (
+    uut: alu GENERIC MAP (
         N => 4
     ) PORT MAP (
         cmd => cmd_s,
         a => a_s,
         b => b_s,
-        a_cond => a_cond_s,
-        b_cond => b_cond_s,
-        c_in_cond => c_in_cond_s
+        y => y_s
     );
 
     stimulus: PROCESS
     BEGIN
 
         cmd_s <= "000";
-        a_s <= "0101";
+        a_s <= "0000";
         b_s <= "0000";
+        WAIT FOR 10 NS;
+
+        cmd_s <= "100";
+        a_s <= "0101";
+        b_s <= "0011";
+        WAIT FOR 10 NS;
+
+        cmd_s <= "101";
+        a_s <= "0101";
+        b_s <= "0011";
+        WAIT FOR 10 NS;
+
+        cmd_s <= "110";
+        a_s <= "0101";
+        b_s <= "0011";
+        WAIT FOR 10 NS;
+
+        cmd_s <= "111";
+        a_s <= "0101";
+        b_s <= "0011";
         WAIT FOR 10 NS;
 
         WAIT;

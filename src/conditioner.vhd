@@ -45,7 +45,7 @@ BEGIN
     END GENERATE;
 
     or_net: FOR i IN N-1 DOWNTO 0 GENERATE
-        and_s(i) <= a(i) AND b(i);
+        or_s(i) <= a(i) OR b(i);
     END GENERATE;
 
     neg: negator GENERIC MAP (
